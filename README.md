@@ -6,5 +6,5 @@
 * 0602更新：推荐功能
 ![0602版本](https://github.com/cbhust8025/MySpider/blob/master/spider0602.jpg)
 
-* 0604更新：优化推荐功能，展示更多分类
+* 0604更新：优化推荐功能，展示更多分类，并且在选择推荐书籍时添加自动补全功能
 ![0602版本](https://github.com/cbhust8025/MySpider/blob/master/spider0604.jpg)
