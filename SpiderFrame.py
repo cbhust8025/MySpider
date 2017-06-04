@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: gbk
 '''
-ÅÀ³æÖ÷´°¿Ú
+çˆ¬è™«ä¸»çª—å£
 '''
 import wx
 import re
@@ -12,135 +12,151 @@ textColorForeGround = "#E9EBFE"
 textColorBackGround = "black"
 ########################################################################
 class Spider(wx.Frame):
-    # ÅÀ³æÖ÷´°¿ÚµÄ¹¹Ôìº¯Êı£¬°ó¶¨ÁËÓÒÉÏ½ÇµÄ¹Ø±Õ°´Å¥
+    # çˆ¬è™«ä¸»çª—å£çš„æ„é€ å‡½æ•°ï¼Œç»‘å®šäº†å³ä¸Šè§’çš„å…³é—­æŒ‰é’®
     def __init__(self):
         wx.Frame.__init__(self, None, -1,
-                          title=u"²»½ö½öÊÇÒ»¸öÅÀ³æ",
+                          title=u"ä¸ä»…ä»…æ˜¯ä¸€ä¸ªçˆ¬è™«",
                           size=(1200, 900),
                           style=wx.DEFAULT_FRAME_STYLE)
-        # °ó¶¨ÓÒÉÏ½Ç¹Ø±Õ´°¿Ú
+        # ç»‘å®šå³ä¸Šè§’å…³é—­çª—å£
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
-        # ³õÊ¼»¯¸÷Àà¶ÔÏó£¬ÓÃÓÚÏÂÔØ¡¢½âÎö
-        self.downloader = HtmlDownloader()  # ³õÊ¼»¯ÏÂÔØÆ÷
+        # åˆå§‹åŒ–å„ç±»å¯¹è±¡ï¼Œç”¨äºä¸‹è½½ã€è§£æ
+        self.downloader = HtmlDownloader()  # åˆå§‹åŒ–ä¸‹è½½å™¨
 
-        # ÔÚÖ÷´°¿Ú·ÅÖÃÁ½¸öÃæ°å
+        # åœ¨ä¸»çª—å£æ”¾ç½®ä¸¤ä¸ªé¢æ¿
         self.Panel1 = wx.Panel(self)
         self.Panel2 = wx.Panel(self)
 
-        # Ãæ°åÑÕÉ«ÉèÖÃ
+        # é¢æ¿é¢œè‰²è®¾ç½®
         self.Panel1.SetBackgroundColour('#FFF2E2')
         self.Panel2.SetBackgroundColour('White')
 
-        # °´Å¥ÃèÊö--panel1
-        RecommandButton = wx.Button(self.Panel1, label=u'ÍÆ¼ö')
+        # æŒ‰é’®æè¿°--panel1
+        RecommandButton = wx.Button(self.Panel1, label=u'æ¨è')
+        TestButton = wx.Button(self.Panel1, label=u"æµ‹è¯•")
 
 
-        # °´Å¥¹¦ÄÜ°ó¶¨
+        # æŒ‰é’®åŠŸèƒ½ç»‘å®š
         RecommandButton.Bind(wx.EVT_BUTTON, self.recommand)
+        TestButton.Bind(wx.EVT_BUTTON, self.test)
 
-        # ÎÄ±¾¿ò¿Ø¼şÃèÊö--panel2
-        self.MainText = wx.TextCtrl(self.Panel2, -1, style=wx.TE_MULTILINE | wx.TE_RICH2)  # Ö÷ÒªÎÄ±¾ÏÔÊ¾
+        # æ–‡æœ¬æ¡†æ§ä»¶æè¿°--panel2
+        # wx.TE_PROCESS_ENTER ã€wx.TE_PROCESS_TAB æ–‡æœ¬æ¡†æ¥å—tabé”®ï¼ˆä¸‹ä¸€é¡¹ï¼‰å’Œå›è½¦é”®ï¼ˆé€‰ä¸­å½“å‰é¡¹ï¼‰çš„åŠŸèƒ½
+        self.inputText = wx.TextCtrl(self.Panel1, -1,
+                style=wx.TE_RICH2 | wx.TE_PROCESS_ENTER | wx.TE_PROCESS_TAB | wx.PROCESS_DEFAULT | wx.TE_AUTO_URL) # è¾“å…¥æ–‡æœ¬æ¡†
+        self.inputText.Bind(wx.EVT_TEXT, self.showbookdetail)
+        self.MainText = wx.TextCtrl(self.Panel2, -1, style=wx.TE_MULTILINE | wx.TE_RICH2)  # ä¸»è¦æ–‡æœ¬æ˜¾ç¤º
         self.MainText.SetOwnBackgroundColour(textColorForeGround)
-        self.BarText = wx.StaticText(self.Panel2, -1,style=wx.TE_MULTILINE | wx.TE_RICH2)  # ×´Ì¬À¸ÏÔÊ¾
+        self.BarText = wx.StaticText(self.Panel2, -1,style=wx.TE_MULTILINE | wx.TE_RICH2)  # çŠ¶æ€æ æ˜¾ç¤º
 
-        # ´°¿ÚÉè¼Æ
-        self.ButtonBox = wx.BoxSizer()  # ºáÏò°üº¬¿Ø¼ş--°´Å¥box£¬·ÅÖÃËùÓĞ°´Å¥
-        self.TextBox = wx.BoxSizer(wx.VERTICAL)  # ºáÏò°üº¬¿Ø¼ş--ÎÄ±¾¿òbox£¬·ÅÖÃÎÄ±¾¿ò
-        self.Panel1Box = wx.BoxSizer()  # ºáÏò°üº¬¿Ø¼ş--Ãæ°å1box£¬·ÅÖÃÃæ°å1ÖĞ°üº¬µÄËùÓĞbox
-        self.Panel2Box = wx.BoxSizer(wx.VERTICAL)  # ×İÏò°üº¬¿Ø¼ş--Ãæ°å2box£¬·ÅÖÃÃæ°å2ÖĞ°üº¬µÄËùÓĞbox
-        self.MainBox = wx.BoxSizer(wx.VERTICAL)  # ×İÏò°üº¬¿Ø¼ş--´°¿Ú×Übox
+        # çª—å£è®¾è®¡
+        self.ButtonBox = wx.BoxSizer()  # æ¨ªå‘åŒ…å«æ§ä»¶--æŒ‰é’®boxï¼Œæ”¾ç½®æ‰€æœ‰æŒ‰é’®
+        self.TextBox = wx.BoxSizer(wx.VERTICAL)  # æ¨ªå‘åŒ…å«æ§ä»¶--æ–‡æœ¬æ¡†boxï¼Œæ”¾ç½®æ–‡æœ¬æ¡†
+        self.Panel1Box = wx.BoxSizer()  # æ¨ªå‘åŒ…å«æ§ä»¶--é¢æ¿1boxï¼Œæ”¾ç½®é¢æ¿1ä¸­åŒ…å«çš„æ‰€æœ‰box
+        self.Panel2Box = wx.BoxSizer(wx.VERTICAL)  # çºµå‘åŒ…å«æ§ä»¶--é¢æ¿2boxï¼Œæ”¾ç½®é¢æ¿2ä¸­åŒ…å«çš„æ‰€æœ‰box
+        self.MainBox = wx.BoxSizer(wx.VERTICAL)  # çºµå‘åŒ…å«æ§ä»¶--çª—å£æ€»box
 
-        # °´Å¥box
-        self.ButtonBox.Add(RecommandButton, proportion=0, flag=wx.ALL, border=10)
+        # æŒ‰é’®box
+        self.ButtonBox.Add(self.inputText, proportion=10, flag=wx.ALL | wx.EXPAND, border=10)
+        self.ButtonBox.Add(RecommandButton, proportion=1, flag=wx.ALL, border=10)
+        self.ButtonBox.Add(TestButton, proportion=1, flag=wx.ALL, border=10)
 
-        # ÎÄ±¾¿òbox
-            # wx.EXPAND ²ÎÊı±íÊ¾ÎÄ±¾¿ò¾¡¿ÉÄÜÕ¼ÂúboxµÄÊ£Óà¿Õ¼ä
+        # æ–‡æœ¬æ¡†box
+            # wx.EXPAND å‚æ•°è¡¨ç¤ºæ–‡æœ¬æ¡†å°½å¯èƒ½å æ»¡boxçš„å‰©ä½™ç©ºé—´
         self.TextBox.Add(self.MainText, proportion=25, flag=wx.ALL | wx.EXPAND, border=10)
         self.TextBox.Add(self.BarText, proportion=1, flag=wx.ALL | wx.EXPAND, border=10)
         # self.TextBox.Hide(self.BarText)
 
-        # Ãæ°å1--boxÉèÖÃ
-        self.Panel1Box.Add(self.ButtonBox, proportion=0, flag=wx.ALL | wx.EXPAND, border=0)
+        # é¢æ¿1--boxè®¾ç½®
+        self.Panel1Box.Add(self.ButtonBox, flag=wx.ALL | wx.EXPAND, border=0)
         self.Panel1.SetSizer(self.Panel1Box)
 
-        # Ãæ°å2--boxÉèÖÃ
+        # é¢æ¿2--boxè®¾ç½®
         self.Panel2Box.Add(self.TextBox, proportion=0, flag=wx.ALL | wx.EXPAND, border=0)
         self.Panel2.SetSizer(self.Panel2Box)
 
-        # ´°¿Ú×Übox
+        # çª—å£æ€»box
         self.MainBox.Add(self.Panel1, proportion=1, flag=wx.ALL | wx.EXPAND, border=10)
         self.MainBox.Add(self.Panel2, proportion=1, flag=wx.ALL | wx.EXPAND, border=10)
 
-        # ½«box¶¼·Åµ½´°¿ÚÉÏ
+        # å°†boxéƒ½æ”¾åˆ°çª—å£ä¸Š
         self.SetSizer(self.MainBox)
+        self.recommand(wx.wxEVT_COMMAND_BUTTON_CLICKED)  # å¼€å§‹ç¨‹åºç¬¬ä¸€æ­¥å…ˆè¿è¡Œä¸€ä¸‹æ¨èç³»ç»Ÿ
 
     def OnClose(self, evt):
-        ret = wx.MessageBox('È·ÈÏ¹Ø±Õ?', '¹Ø±Õ', wx.OK | wx.CANCEL)
+        ret = wx.MessageBox('ç¡®è®¤å…³é—­?', 'å…³é—­', wx.OK | wx.CANCEL)
         if ret == wx.OK:
             # do something here...
             evt.Skip()
 
-    def TitleBookForRecommand(self, LinksRes, targetLink):
-        others = [u"ÆäËûÍÆ¼ö"]
-        for Link in LinksRes:
-            print Link
-            if(targetLink.has_key(Link['data-eid'])):
-                targetLink[Link['data-eid']].append(
-                    Link['title'] if (Link.has_attr('title'))
-                        else (Link.get_text() if Link.get_text() != "" else Link.findChildren('img')[0]['alt']))
-            else:
-                others.append(Link['title'] if (Link.has_attr('title')) else Link.get_text())
-        return others
-
-    def GetLinksForRecommand(self, soup, targetLink):
-        LinksRes = soup.find_all('a', {
-            # "class": "name",
-            "data-eid": re.compile("qd_A\d{3}"),
-            "href": re.compile("//book.qidian.com/info/\d{9,20}")})
-        print help(BeautifulSoup)
-        others = self.TitleBookForRecommand(LinksRes, targetLink)
-        targetLink["qd_A000"] = others
-        target = sorted(targetLink, reverse=True)
-        # print help(re)
-        temp = ""
-        for qdA in target:
-            if(len(targetLink[qdA]) == 1):
-                continue
-            temp += targetLink[qdA][0] + ":" + "\n"
+    def GetTextForRecommand(self, titledic):
+        text = ""
+        titlel = sorted(titledic.keys(), key=lambda a : len(a), reverse=True)  # æŒ‰ç…§åˆ†ç±»åçš„é•¿çŸ­è¿›è¡Œæ’åº
+        for title in titlel:  # æ ¼å¼åŒ–è¾“å‡ºæ–‡æœ¬
+            text += title + ":\n"
             num = 1
-            for title in targetLink[qdA][1:]:
-                if(title == ""):
-                    continue
-                temp += str(num) + ". " + title + "\n"
+            for book in titledic[title]:
+                text += str(num) + ". " + book + "\n"
                 num += 1
-            temp += "\n"
-        temp += "\n"
-        return temp
+            text += "\n"
+        return text
+
+    def GetLinksForRecommand(self, soup):  # è·å–èµ·ç‚¹ä¸»é¡µçš„æ‰€æœ‰å°è¯´é“¾æ¥
+        LinksRes = soup.find_all('a', {  # å°è¯´é“¾æ¥æ‰€åœ¨Tagæ ‡ç­¾åä¸ºa
+            "class": "name",  # å°è¯´é“¾æ¥æ‰€åœ¨Tagçš„classå±æ€§ä¸ºâ€œnameâ€
+            "data-eid": re.compile("qd_A\d{3}"),  # å°è¯´é“¾æ¥æ‰€åœ¨Tagçš„â€œdata-eidâ€å½¢å¼ä¸ºqd_A110è¿™ç§æ ·å¼ï¼Œä½¿ç”¨æ­£åˆ™è¡¨è¾¾å¼è¿›è¡ŒåŒ¹é…
+            "href": re.compile("//book.qidian.com/info/\d{9,20}")})  # åˆ©ç”¨bs4ä¸­soupå¯¹è±¡çš„find_allæ–¹æ³•ï¼ŒåŒ¹é…æ‰€æœ‰å°è¯´é“¾æ¥æ‰€åœ¨çš„Tag
+        titledic = {}  # å°†è·å–åˆ°çš„å°è¯´é“¾æ¥åæ•´åˆè¿›å­—å…¸ï¼Œé”®å€¼ä¸ºå½“å‰å°è¯´æ‰€åœ¨çš„åˆ†ç±»å
+        LinkNum = []
+        regex = re.compile(r"\d{9,20}")
+        for Link in LinksRes:
+            linkprevious =  Link.find_previous('h3')  # ç¦»å°è¯´æœ€è¿‘çš„å‰ç½®Tagåä¸º'h3'çš„Tagå³ä¸ºå½“å‰å°è¯´æ‰€åœ¨çš„åˆ†ç±»ï¼Œâ€œNO.1â€è¿™ä¸ªæ ‡ç­¾é™¤å¤–
+            while(linkprevious.getText() == "NO.1"):
+                linkprevious = linkprevious.find_previous('h3')
+            # å»é™¤åˆ†ç±»åä¸­è·å–åˆ°çš„â€œæ›´å¤šâ€ã€"24å°æ—¶å†…æ›´æ–°15163æœ¬"è¿™ä¸¤ä¸ªå­—æ ·
+            title = linkprevious.getText().rstrip(u'\u66f4\u591a\ue621')\
+                .rstrip(u'24\u5c0f\u65f6\u5185\u66f4\u65b015163\u672c')
+            if(titledic.has_key(title)):
+                titledic[title].append(Link.getText() + "    " + Link.get('href'))
+            else:
+                titledic[title] = [Link.getText() + "    " + Link.get('href')]
+            LinkNum.append(Link.getText() + " " + str(int(regex.findall(Link.get('href'))[0])))
+        self.inputText.AutoComplete(choices=LinkNum)
+        return self.GetTextForRecommand(titledic)  # å°†ç”Ÿæˆçš„åˆ†ç±»å­—å…¸æ ¼å¼åŒ–æˆè¾“å‡ºæ ¼å¼ï¼Œè¿›è¡Œè¿”å›æ˜¾ç¤º
 
     def recommand(self, event):
         soup = BeautifulSoup(
             markup=self.downloader.download("http://www.qidian.com/"),
-            features='html.parser', from_encoding='utf-8')
-        # print help(soup.find_all)
-        targetlink = {
-            "qd_A103": [u"±¾ÖÜÇ¿ÍÆ"],
-            "qd_A110": [u"±à¼­ÍÆ¼ö"],
-            "qd_A113": [u"Èı½­¡¤ÍøÎÄĞÂ·ç"],
-            "qd_A147": [u"ĞÂÈË¡¤Ç©Ô¼ĞÂÊé°ñ"],
-            "qd_A138": [u"ĞÂÊéÍÆ¼ö"]
-        }
-        self.MainText.SetEditable(False)
-        self.MainTextValueSet(self.GetLinksForRecommand(soup, targetlink))
-        self.BarTextValueSet("ÍÆ¼ö")  # ÉèÖÃ×´Ì¬À¸
+            features='html.parser', from_encoding='utf-8')  # è§£æwww.qidian.comç½‘ç«™çš„é¡µé¢ï¼Œç”ŸæˆBeautifulSoupå¯¹è±¡
+        self.MainText.SetEditable(False)  # å°†æ¨èçŠ¶æ€ä¸‹çš„ä¸»è¦æ–‡æœ¬æ¡†è®¾ç½®æˆä¸å¯ç¼–è¾‘çŠ¶æ€
+        self.MainTextValueSet(self.GetLinksForRecommand(soup))  # è®¾ç½®æ¨èå°è¯´æ–‡æœ¬
+        self.BarTextValueSet("æ¨è")  # è®¾ç½®çŠ¶æ€æ 
+        # æ¨èæ–‡æœ¬è¿›è¡Œäº†æ ¼å¼åŒ–è¾“å‡ºï¼Œå·²å®ŒæˆåŸºæœ¬è¦æ±‚
+
+    def showbookdetail(self, event):
+        # å±•ç¤ºä¹¦ç±è¯¦æƒ…æŒ‰é’®
+        regex = re.compile(r"\S+\s\d{9,20}$") # åŒ¹é…ï¼Œå½“è¾“å…¥æ¡†è¾“å…¥çš„æ»¡è¶³æˆ‘ä»¬è¦æ±‚çš„ä¹¦ç±æ ¼å¼ï¼Œæˆ‘ä»¬è¿›è¡Œæ˜¾ç¤ºä¹¦ç±è¯¦æƒ…
+        # print re.match(regex, self.inputText.GetValue())
+        if(re.match(regex, self.inputText.GetValue())):
+            self.MainTextValueSet(self.inputText.GetValue())
+
+    def test(self, evt):
+        # æµ‹è¯•æŒ‰é’®åŠŸèƒ½
+        self.prefix = "http://book.qidian.com/info/" # èµ·ç‚¹æ¯ä¸€æœ¬ä¹¦ç±ç½‘é¡µåœ°å€çš„å‰ç¼€ åŠ ä¸ŠIDå³ä¸ºå½“å‰ä¹¦ç±çš„é¡µé¢åœ°å€
+        soup = BeautifulSoup(
+            markup=self.downloader.download(self.prefix + self.inputText.GetValue().split()[-1]),
+            features='html.parser', from_encoding='utf-8' # è§£æå½“å‰é€‰ä¸­çš„ä¹¦ç±é¡µé¢ï¼Œç”ŸæˆBeautifulSoupå¯¹è±¡
+        )
+        print soup
 
     def MainTextValueSet(self, value):
-        self.MainText.SetValue(value)  # ÉèÖÃÖ÷ÒªÎÄ±¾ÓòµÄÎÄ±¾
-        f = wx.Font(18, wx.ROMAN, wx.NORMAL, wx.NORMAL, False)  # ÉèÖÃ×ÖÌå¸ñÊ½£º18ºÅ ÂŞÂü×ÖÌå£¬²»ÇãĞ±¡¢²»¼Ó´Ö
+        self.MainText.SetValue(value)  # è®¾ç½®ä¸»è¦æ–‡æœ¬åŸŸçš„æ–‡æœ¬
+        f = wx.Font(18, wx.ROMAN, wx.NORMAL, wx.NORMAL, False)  # è®¾ç½®å­—ä½“æ ¼å¼ï¼š18å· ç½—æ›¼å­—ä½“ï¼Œä¸å€¾æ–œã€ä¸åŠ ç²—
         self.MainText.SetStyle(0, self.MainText.GetLastPosition(),
-            wx.TextAttr(textColorBackGround, textColorForeGround, f))  # ÉèÖÃÇ°¾°¡¢±³¾°É«£¨wx.TextAttr£©
+            wx.TextAttr(textColorBackGround, textColorForeGround, f))  # è®¾ç½®å‰æ™¯ã€èƒŒæ™¯è‰²ï¼ˆwx.TextAttrï¼‰
 
     def BarTextValueSet(self, value):
-        self.BarText.SetLabel(value)  # ÉèÖÃ×´Ì¬À¸ÎÄ±¾
-        f = wx.Font(15, wx.ROMAN, wx.NORMAL, wx.BOLD, False)  # ÉèÖÃ×´Ì¬À¸ÎÄ±¾×ÖÌå£º15ºÅ ÂŞÂü×ÖÌå£¬ ²»ÇãĞ±¡¢¼Ó´Ö
-        self.BarText.SetFont(f)  # ½øĞĞÉèÖÃ
+        self.BarText.SetLabel(value)  # è®¾ç½®çŠ¶æ€æ æ–‡æœ¬
+        f = wx.Font(15, wx.ROMAN, wx.NORMAL, wx.BOLD, False)  # è®¾ç½®çŠ¶æ€æ æ–‡æœ¬å­—ä½“ï¼š15å· ç½—æ›¼å­—ä½“ï¼Œ ä¸å€¾æ–œã€åŠ ç²—
+        self.BarText.SetFont(f)  # è¿›è¡Œè®¾ç½®
