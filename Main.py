@@ -1,7 +1,13 @@
 #!/usr/bin/env python
-# encoding: gbk
+# -*- coding=utf-8 -*-
+
+# --------------------------------------------------------
+# Python Templet
+# Copyright (c) 2017 CB
+# Written by Leal Cheng
+# --------------------------------------------------------
 '''
-主程序， main（），入口
+主程序 入口，从这里开始执行爬虫主窗口
 '''
 import sys
 import wx

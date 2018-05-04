@@ -1,5 +1,11 @@
 #!/usr/bin/env python
-# encoding: gbk
+# -*- coding=utf-8 -*-
+
+# --------------------------------------------------------
+# Python Templet
+# Copyright (c) 2017 CB
+# Written by Leal Cheng
+# --------------------------------------------------------
 '''
 这里使用urllib2下载Html，用于解析
 '''

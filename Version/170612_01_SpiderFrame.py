@@ -1,7 +1,13 @@
 #!/usr/bin/env python
-# encoding: gbk
+# -*- coding=utf-8 -*-
+
+# --------------------------------------------------------
+# Python Templet
+# Copyright (c) 2017 CB
+# Written by Leal Cheng
+# --------------------------------------------------------
 '''
-çˆ¬è™«ä¸»çª—å£
+ÅÀ³æÖ÷´°¿Ú
 '''
 import wx
 import re
@@ -9,34 +15,34 @@ from bs4 import BeautifulSoup
 from HtmlDownloader import HtmlDownloader
 from MyCustomListPopup import MyCustomListPopup
 ########################################################################
-textColorForeGround = "#E9EBFE"  # æ–‡æœ¬å‰æ™¯
-textColorBackGround = "black"  # æ–‡æœ¬èƒŒæ™¯
-combocontrolButtonWidth = 35  # ä¸‹æ‹‰æ¡†æŒ‰é’®çš„å®½åº¦
+textColorForeGround = "#E9EBFE"  # ÎÄ±¾Ç°¾°
+textColorBackGround = "black"  # ÎÄ±¾±³¾°
+combocontrolButtonWidth = 35  # ÏÂÀ­¿ò°´Å¥µÄ¿í¶È
 ########################################################################
 
 
 class MyCustomLP(MyCustomListPopup):
-    # è‡ªå®šä¹‰åˆ—è¡¨æ¡†
+    # ×Ô¶¨ÒåÁĞ±í¿ò
 
     def ConfigureListCtrl(self):
-        # é‡å†™æ­¤å‡½æ•°æ¥è¿›è¡Œè‡ªå®šä¹‰é…ç½®
-        # æ’å…¥ä¸‰åˆ—è¿›è¡Œåˆå§‹åŒ–
-        self.InsertColumn(1, "å°è¯´å")
-        self.InsertColumn(2, "æ¦œå•")
-        self.InsertColumn(3, "é“¾æ¥")
-        # è°ƒæ•´æ¯ä¸€åˆ—çš„å®½åº¦
+        # ÖØĞ´´Ëº¯ÊıÀ´½øĞĞ×Ô¶¨ÒåÅäÖÃ
+        # ²åÈëÈıÁĞ½øĞĞ³õÊ¼»¯
+        self.InsertColumn(1, "Ğ¡ËµÃû")
+        self.InsertColumn(2, "°ñµ¥")
+        self.InsertColumn(3, "Á´½Ó")
+        # µ÷ÕûÃ¿Ò»ÁĞµÄ¿í¶È
         self.SetColumnWidth(0, 200)
         self.SetColumnWidth(1, 150)
         self.SetColumnWidth(2, 300)
-        # # æ·»åŠ ä¸‰è¡Œç”¨ä½œè°ƒè¯•ï¼Œå®Œæˆåè¿›è¡Œæ³¨é‡Š
-        # list.Append(["asa1", "asa2", "asa3", "asa4"])  # è¶…è¿‡å½“å‰çš„åˆ—æ•°ï¼Œè§¦å‘ä¸­æ–­é”™è¯¯
+        # # Ìí¼ÓÈıĞĞÓÃ×÷µ÷ÊÔ£¬Íê³Éºó½øĞĞ×¢ÊÍ
+        # list.Append(["asa1", "asa2", "asa3", "asa4"])  # ³¬¹ıµ±Ç°µÄÁĞÊı£¬´¥·¢ÖĞ¶Ï´íÎó
         # self.Append(["asa1", "asa2", "asa3"])
         # self.Append(["asb1", "asb2", "asb3"])
         # self.Append(["asc1", "asc2", "asc3"])
         # self.Append(["asd1asdsadasdsadsadsadasd", "asd2", "asd3"])
-        self.SetBackgroundColour(textColorForeGround)  # è®¾ç½®åˆ—è¡¨æ¡†çš„æ–‡å­—èƒŒæ™¯
+        self.SetBackgroundColour(textColorForeGround)  # ÉèÖÃÁĞ±í¿òµÄÎÄ×Ö±³¾°
     # def Append(self, txt):
-    #     # æ·»åŠ ä¸€è¡Œï¼Œä»¥åˆ—è¡¨å½¢å¼æ·»åŠ ï¼Œé•¿åº¦å°äºç­‰äºåˆ—æ•°
+    #     # Ìí¼ÓÒ»ĞĞ£¬ÒÔÁĞ±íĞÎÊ½Ìí¼Ó£¬³¤¶ÈĞ¡ÓÚµÈÓÚÁĞÊı
     #     # self.Append(["asa1", "asa2", "asa3"])
     #     self.Append(txt)
 
@@ -48,130 +54,130 @@ class MyCustomLP(MyCustomListPopup):
 
 
 class Spider(wx.Frame):
-    # çˆ¬è™«ä¸»çª—å£çš„æ„é€ å‡½æ•°ï¼Œç»‘å®šäº†å³ä¸Šè§’çš„å…³é—­æŒ‰é’®
+    # ÅÀ³æÖ÷´°¿ÚµÄ¹¹Ôìº¯Êı£¬°ó¶¨ÁËÓÒÉÏ½ÇµÄ¹Ø±Õ°´Å¥
 
     def __init__(self):
         wx.Frame.__init__(self, None, -1,
-                          title=u"ä¸ä»…ä»…æ˜¯ä¸€ä¸ªçˆ¬è™«",
+                          title=u"²»½ö½öÊÇÒ»¸öÅÀ³æ",
                           size=(1200, 900),
                           style=wx.DEFAULT_FRAME_STYLE)
-        # åˆå§‹åŒ–ä¸€äº›çª—å£å†…çš„å±æ€§å€¼
-        self.namelink = {}  # ä¿å­˜å·²ç»çˆ¬å–çš„{å°è¯´åï¼š[åˆ†ç±»ï¼Œé“¾æ¥]} é”®å€¼å¯¹ï¼Œç”¨äºè‡ªåŠ¨è¡¥å…¨çš„å°è¯´ç´¢å¼•é“¾æ¥
+        # ³õÊ¼»¯Ò»Ğ©´°¿ÚÄÚµÄÊôĞÔÖµ
+        self.namelink = {}  # ±£´æÒÑ¾­ÅÀÈ¡µÄ{Ğ¡ËµÃû£º[·ÖÀà£¬Á´½Ó]} ¼üÖµ¶Ô£¬ÓÃÓÚ×Ô¶¯²¹È«µÄĞ¡ËµË÷ÒıÁ´½Ó
 
-        # ç»‘å®šå³ä¸Šè§’å…³é—­çª—å£
+        # °ó¶¨ÓÒÉÏ½Ç¹Ø±Õ´°¿Ú
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
-        # åˆå§‹åŒ–å„ç±»å¯¹è±¡ï¼Œç”¨äºä¸‹è½½ã€è§£æ
-        self.downloader = HtmlDownloader()  # åˆå§‹åŒ–ä¸‹è½½å™¨
+        # ³õÊ¼»¯¸÷Àà¶ÔÏó£¬ÓÃÓÚÏÂÔØ¡¢½âÎö
+        self.downloader = HtmlDownloader()  # ³õÊ¼»¯ÏÂÔØÆ÷
 
-        # åœ¨ä¸»çª—å£æ”¾ç½®ä¸¤ä¸ªé¢æ¿
+        # ÔÚÖ÷´°¿Ú·ÅÖÃÁ½¸öÃæ°å
         self.Panel1 = wx.Panel(self)
         self.Panel2 = wx.Panel(self)
 
-        # é¢æ¿é¢œè‰²è®¾ç½®  ç•Œé¢è®¾è®¡å®Œååˆ é™¤
+        # Ãæ°åÑÕÉ«ÉèÖÃ  ½çÃæÉè¼ÆÍêºóÉ¾³ı
         self.Panel1.SetBackgroundColour('#FFF2E2')
         self.Panel2.SetBackgroundColour('White')
 
-        # æŒ‰é’®æè¿°--panel1
-        RecommandButton = wx.Button(self.Panel1, label=u'æ¨è')
-        TestButton = wx.Button(self.Panel1, label=u"æµ‹è¯•")
+        # °´Å¥ÃèÊö--panel1
+        RecommandButton = wx.Button(self.Panel1, label=u'ÍÆ¼ö')
+        TestButton = wx.Button(self.Panel1, label=u"²âÊÔ")
 
-        # æŒ‰é’®åŠŸèƒ½ç»‘å®š
+        # °´Å¥¹¦ÄÜ°ó¶¨
         RecommandButton.Bind(wx.EVT_BUTTON, self.recommand)
         TestButton.Bind(wx.EVT_BUTTON, self.test)
 
-        # æ–‡æœ¬æ¡†æ§ä»¶æè¿°--panel2
-        # åˆå§‹åŒ–ç»„åˆæ¡†
+        # ÎÄ±¾¿ò¿Ø¼şÃèÊö--panel2
+        # ³õÊ¼»¯×éºÏ¿ò
         self.combocontrol = wx.combo.ComboCtrl(
-            parent=self.Panel1, style=wx.CB_SORT)  # åˆå§‹åŒ–åªè¯»æ ¼å¼çš„ç»„åˆæ¡†
-        self.mcListPopup = MyCustomLP()  # åˆå§‹åŒ–ç»„åˆæ¡†é‡Œé¢çš„åˆ—è¡¨æ¡†
-        self.combocontrol.SetPopupControl(self.mcListPopup)  # é…ç½®ç»„åˆæ¡†ä¸­çš„åˆ—è¡¨æ¡†
+            parent=self.Panel1, style=wx.CB_SORT)  # ³õÊ¼»¯Ö»¶Á¸ñÊ½µÄ×éºÏ¿ò
+        self.mcListPopup = MyCustomLP()  # ³õÊ¼»¯×éºÏ¿òÀïÃæµÄÁĞ±í¿ò
+        self.combocontrol.SetPopupControl(self.mcListPopup)  # ÅäÖÃ×éºÏ¿òÖĞµÄÁĞ±í¿ò
         self.combocontrol.SetButtonPosition(
-            width=combocontrolButtonWidth)  # é…ç½®ç»„åˆæ¡†çš„ä¸‹æ‹‰æŒ‰é’®çš„å®½åº¦
-        self.mcListPopup.ConfigureListCtrl()  # é…ç½®åˆ—è¡¨æ¡†
-        self.combotext = self.combocontrol.GetTextCtrl()  # è·å–ç»„åˆæ¡†ä¸­çš„æ–‡æœ¬åŸŸ
+            width=combocontrolButtonWidth)  # ÅäÖÃ×éºÏ¿òµÄÏÂÀ­°´Å¥µÄ¿í¶È
+        self.mcListPopup.ConfigureListCtrl()  # ÅäÖÃÁĞ±í¿ò
+        self.combotext = self.combocontrol.GetTextCtrl()  # »ñÈ¡×éºÏ¿òÖĞµÄÎÄ±¾Óò
         self.combocontrol.Bind(wx.EVT_TEXT, self.ChangeText)
         self.combocontrol.Bind(wx.EVT_KEY_DOWN, self.OnBtnBackButton)
         # self.combocontrol.Bind(wx.EVT_CHAR, self.OnChar)
-        # wx.TE_PROCESS_ENTER ã€wx.TE_PROCESS_TAB æ–‡æœ¬æ¡†æ¥å—tabé”®ï¼ˆä¸‹ä¸€é¡¹ï¼‰å’Œå›è½¦é”®ï¼ˆé€‰ä¸­å½“å‰é¡¹ï¼‰çš„åŠŸèƒ½
+        # wx.TE_PROCESS_ENTER ¡¢wx.TE_PROCESS_TAB ÎÄ±¾¿ò½ÓÊÜtab¼ü£¨ÏÂÒ»Ïî£©ºÍ»Ø³µ¼ü£¨Ñ¡ÖĞµ±Ç°Ïî£©µÄ¹¦ÄÜ
         self.inputText = wx.TextCtrl(self.Panel1, -1,
                                      style=wx.TE_RICH2
                                      | wx.TE_PROCESS_ENTER
                                      | wx.TE_PROCESS_TAB
                                      | wx.PROCESS_DEFAULT
-                                     | wx.TE_AUTO_URL)  # è¾“å…¥æ–‡æœ¬æ¡†
-        # ç»‘å®šå›è½¦äº‹ä»¶åˆ°showbookdetailä¸Š
+                                     | wx.TE_AUTO_URL)  # ÊäÈëÎÄ±¾¿ò
+        # °ó¶¨»Ø³µÊÂ¼şµ½showbookdetailÉÏ
         self.inputText.Bind(wx.EVT_TEXT_ENTER, self.showbookdetail)
         self.MainText = wx.TextCtrl(
-            self.Panel2, -1, style=wx.TE_MULTILINE | wx.TE_RICH2)  # ä¸»è¦æ–‡æœ¬æ˜¾ç¤º
+            self.Panel2, -1, style=wx.TE_MULTILINE | wx.TE_RICH2)  # Ö÷ÒªÎÄ±¾ÏÔÊ¾
         self.MainText.SetOwnBackgroundColour(textColorForeGround)
         self.BarText = wx.StaticText(
-            self.Panel2, -1, style=wx.TE_MULTILINE | wx.TE_RICH2)  # çŠ¶æ€æ æ˜¾ç¤º
+            self.Panel2, -1, style=wx.TE_MULTILINE | wx.TE_RICH2)  # ×´Ì¬À¸ÏÔÊ¾
 
-        # çª—å£è®¾è®¡
-        self.InputBox = wx.BoxSizer()  # æ¨ªå‘åŒ…å«æ§ä»¶--æŒ‰é’®boxï¼Œæ”¾ç½®æ‰€æœ‰æŒ‰é’®
-        self.TextBox = wx.BoxSizer(wx.VERTICAL)  # æ¨ªå‘åŒ…å«æ§ä»¶--æ–‡æœ¬æ¡†boxï¼Œæ”¾ç½®æ–‡æœ¬æ¡†
-        self.Panel1Box = wx.BoxSizer()  # æ¨ªå‘åŒ…å«æ§ä»¶--é¢æ¿1boxï¼Œæ”¾ç½®é¢æ¿1ä¸­åŒ…å«çš„æ‰€æœ‰box
-        # çºµå‘åŒ…å«æ§ä»¶--é¢æ¿2boxï¼Œæ”¾ç½®é¢æ¿2ä¸­åŒ…å«çš„æ‰€æœ‰box
+        # ´°¿ÚÉè¼Æ
+        self.InputBox = wx.BoxSizer()  # ºáÏò°üº¬¿Ø¼ş--°´Å¥box£¬·ÅÖÃËùÓĞ°´Å¥
+        self.TextBox = wx.BoxSizer(wx.VERTICAL)  # ºáÏò°üº¬¿Ø¼ş--ÎÄ±¾¿òbox£¬·ÅÖÃÎÄ±¾¿ò
+        self.Panel1Box = wx.BoxSizer()  # ºáÏò°üº¬¿Ø¼ş--Ãæ°å1box£¬·ÅÖÃÃæ°å1ÖĞ°üº¬µÄËùÓĞbox
+        # ×İÏò°üº¬¿Ø¼ş--Ãæ°å2box£¬·ÅÖÃÃæ°å2ÖĞ°üº¬µÄËùÓĞbox
         self.Panel2Box = wx.BoxSizer(wx.VERTICAL)
-        self.MainBox = wx.BoxSizer(wx.VERTICAL)  # çºµå‘åŒ…å«æ§ä»¶--çª—å£æ€»box
+        self.MainBox = wx.BoxSizer(wx.VERTICAL)  # ×İÏò°üº¬¿Ø¼ş--´°¿Ú×Übox
 
-        # è¾“å…¥ã€æŒ‰é’®ç•Œé¢box
+        # ÊäÈë¡¢°´Å¥½çÃæbox
         self.InputBox.Add(self.inputText, proportion=10,
                           flag=wx.ALL | wx.EXPAND, border=10)
-        self.InputBox.Hide(self.inputText)  # å…ˆéšè—èµ·æ¥ï¼Œä½¿ç”¨ç»„åˆä¸‹æ‹‰æ¡†
+        self.InputBox.Hide(self.inputText)  # ÏÈÒş²ØÆğÀ´£¬Ê¹ÓÃ×éºÏÏÂÀ­¿ò
         self.InputBox.Add(self.combocontrol, proportion=10,
                           flag=wx.ALL | wx.EXPAND, border=10)
         self.InputBox.Add(RecommandButton, proportion=1,
                           flag=wx.ALL, border=10)
         self.InputBox.Add(TestButton, proportion=1, flag=wx.ALL, border=10)
 
-        # æ–‡æœ¬åŸŸç•Œé¢box
-        # wx.EXPAND å‚æ•°è¡¨ç¤ºæ–‡æœ¬æ¡†å°½å¯èƒ½å æ»¡boxçš„å‰©ä½™ç©ºé—´
+        # ÎÄ±¾Óò½çÃæbox
+        # wx.EXPAND ²ÎÊı±íÊ¾ÎÄ±¾¿ò¾¡¿ÉÄÜÕ¼ÂúboxµÄÊ£Óà¿Õ¼ä
         self.TextBox.Add(self.MainText, proportion=25,
                          flag=wx.ALL | wx.EXPAND, border=10)
         self.TextBox.Add(self.BarText, proportion=1,
                          flag=wx.ALL | wx.EXPAND, border=10)
         # self.TextBox.Hide(self.BarText)
 
-        # é¢æ¿1--boxè®¾ç½®
+        # Ãæ°å1--boxÉèÖÃ
         self.Panel1Box.Add(self.InputBox, flag=wx.ALL | wx.EXPAND, border=0)
         self.Panel1.SetSizer(self.Panel1Box)
 
-        # é¢æ¿2--boxè®¾ç½®
+        # Ãæ°å2--boxÉèÖÃ
         self.Panel2Box.Add(self.TextBox, proportion=0,
                            flag=wx.ALL | wx.EXPAND, border=0)
         self.Panel2.SetSizer(self.Panel2Box)
 
-        # çª—å£æ€»box
+        # ´°¿Ú×Übox
         self.MainBox.Add(self.Panel1, proportion=1,
                          flag=wx.ALL | wx.EXPAND, border=10)
         self.MainBox.Add(self.Panel2, proportion=1,
                          flag=wx.ALL | wx.EXPAND, border=10)
 
-        # å°†boxéƒ½æ”¾åˆ°çª—å£ä¸Š
+        # ½«box¶¼·Åµ½´°¿ÚÉÏ
         self.SetSizer(self.MainBox)
-        self.recommand(wx.wxEVT_COMMAND_BUTTON_CLICKED)  # å¼€å§‹ç¨‹åºç¬¬ä¸€æ­¥å…ˆè¿è¡Œä¸€ä¸‹æ¨èç³»ç»Ÿ
+        self.recommand(wx.wxEVT_COMMAND_BUTTON_CLICKED)  # ¿ªÊ¼³ÌĞòµÚÒ»²½ÏÈÔËĞĞÒ»ÏÂÍÆ¼öÏµÍ³
 
     def OnClose(self, evt):
-        ret = wx.MessageBox('ç¡®è®¤å…³é—­?', 'å…³é—­', wx.OK | wx.CANCEL)
+        ret = wx.MessageBox('È·ÈÏ¹Ø±Õ?', '¹Ø±Õ', wx.OK | wx.CANCEL)
         if ret == wx.OK:
             # do something here...
             evt.Skip()
 
-    def SetTextForPopup(self, text):  # è®¾ç½®ä¸‹æ‹‰æ¡†ä¸­çš„æ–‡æœ¬
+    def SetTextForPopup(self, text):  # ÉèÖÃÏÂÀ­¿òÖĞµÄÎÄ±¾
         for txt in text:
             self.namelink[txt[0]] = [txt[-2], txt[-1]]
-            self.mcListPopup.Append(txt)  # åˆ©ç”¨Appendæ–¹æ³•æ·»åŠ ä¸€è¡Œæ–‡æœ¬
-        # self.combocontrol.GetTextCtrl().AutoComplete(self.namelink.keys())  # æ·»åŠ å°è¯´åè‡ªåŠ¨è¡¥å…¨åŠŸèƒ½
+            self.mcListPopup.Append(txt)  # ÀûÓÃAppend·½·¨Ìí¼ÓÒ»ĞĞÎÄ±¾
+        # self.combocontrol.GetTextCtrl().AutoComplete(self.namelink.keys())  # Ìí¼ÓĞ¡ËµÃû×Ô¶¯²¹È«¹¦ÄÜ
         # self.combocontrol.GetTextCtrl().Bind(wx.EVT_KEY_DOWN,
-        # self.ShowBookDetail)  # ç»‘å®šå›è½¦äº‹ä»¶åˆ°showbookdetailä¸Š
+        # self.ShowBookDetail)  # °ó¶¨»Ø³µÊÂ¼şµ½showbookdetailÉÏ
 
     def GetTextForRecommand(self, titledic):
         text = ""
         titlel = sorted(titledic.keys(), key=lambda a: len(a),
-                        reverse=True)  # æŒ‰ç…§åˆ†ç±»åçš„é•¿çŸ­è¿›è¡Œæ’åº
-        for title in titlel:  # æ ¼å¼åŒ–è¾“å‡ºæ–‡æœ¬
+                        reverse=True)  # °´ÕÕ·ÖÀàÃûµÄ³¤¶Ì½øĞĞÅÅĞò
+        for title in titlel:  # ¸ñÊ½»¯Êä³öÎÄ±¾
             text += title + ":\n"
             num = 1
             for book in titledic[title]:
@@ -180,22 +186,22 @@ class Spider(wx.Frame):
             text += "\n"
         return text
 
-    def GetLinksForRecommand(self, soup):  # è·å–èµ·ç‚¹ä¸»é¡µçš„æ‰€æœ‰å°è¯´é“¾æ¥
-        LinksRes = soup.find_all('a', {  # å°è¯´é“¾æ¥æ‰€åœ¨Tagæ ‡ç­¾åä¸ºa
-            "class": "name",  # å°è¯´é“¾æ¥æ‰€åœ¨Tagçš„classå±æ€§ä¸ºâ€œnameâ€
-            # å°è¯´é“¾æ¥æ‰€åœ¨Tagçš„â€œdata-eidâ€å½¢å¼ä¸ºqd_A110è¿™ç§æ ·å¼ï¼Œä½¿ç”¨æ­£åˆ™è¡¨è¾¾å¼è¿›è¡ŒåŒ¹é…
+    def GetLinksForRecommand(self, soup):  # »ñÈ¡ÆğµãÖ÷Ò³µÄËùÓĞĞ¡ËµÁ´½Ó
+        LinksRes = soup.find_all('a', {  # Ğ¡ËµÁ´½ÓËùÔÚTag±êÇ©ÃûÎªa
+            "class": "name",  # Ğ¡ËµÁ´½ÓËùÔÚTagµÄclassÊôĞÔÎª¡°name¡±
+            # Ğ¡ËµÁ´½ÓËùÔÚTagµÄ¡°data-eid¡±ĞÎÊ½Îªqd_A110ÕâÖÖÑùÊ½£¬Ê¹ÓÃÕıÔò±í´ïÊ½½øĞĞÆ¥Åä
             "data-eid": re.compile("qd_A\d{3}"),
-            "href": re.compile("//book.qidian.com/info/\d{9,20}")})  # åˆ©ç”¨bs4ä¸­soupå¯¹è±¡çš„find_allæ–¹æ³•ï¼ŒåŒ¹é…æ‰€æœ‰å°è¯´é“¾æ¥æ‰€åœ¨çš„Tag
-        titledic = {}  # å°†è·å–åˆ°çš„å°è¯´é“¾æ¥åæ•´åˆè¿›å­—å…¸ï¼Œé”®å€¼ä¸ºå½“å‰å°è¯´æ‰€åœ¨çš„åˆ†ç±»å
+            "href": re.compile("//book.qidian.com/info/\d{9,20}")})  # ÀûÓÃbs4ÖĞsoup¶ÔÏóµÄfind_all·½·¨£¬Æ¥ÅäËùÓĞĞ¡ËµÁ´½ÓËùÔÚµÄTag
+        titledic = {}  # ½«»ñÈ¡µ½µÄĞ¡ËµÁ´½ÓÃûÕûºÏ½ø×Öµä£¬¼üÖµÎªµ±Ç°Ğ¡ËµËùÔÚµÄ·ÖÀàÃû
         popuptext = []
         # LinkNum = []
         # regex = re.compile(r"\d{9,20}")
         for Link in LinksRes:
-            # ç¦»å°è¯´æœ€è¿‘çš„å‰ç½®Tagåä¸º'h3'çš„Tagå³ä¸ºå½“å‰å°è¯´æ‰€åœ¨çš„åˆ†ç±»ï¼Œâ€œNO.1â€è¿™ä¸ªæ ‡ç­¾é™¤å¤–
+            # ÀëĞ¡Ëµ×î½üµÄÇ°ÖÃTagÃûÎª'h3'µÄTag¼´Îªµ±Ç°Ğ¡ËµËùÔÚµÄ·ÖÀà£¬¡°NO.1¡±Õâ¸ö±êÇ©³ıÍâ
             linkprevious = Link.find_previous('h3')
             while(linkprevious.getText() == "NO.1"):
                 linkprevious = linkprevious.find_previous('h3')
-            # å»é™¤åˆ†ç±»åä¸­è·å–åˆ°çš„â€œæ›´å¤šâ€ã€"24å°æ—¶å†…æ›´æ–°15163æœ¬"è¿™ä¸¤ä¸ªå­—æ ·
+            # È¥³ı·ÖÀàÃûÖĞ»ñÈ¡µ½µÄ¡°¸ü¶à¡±¡¢"24Ğ¡Ê±ÄÚ¸üĞÂ15163±¾"ÕâÁ½¸ö×ÖÑù
             title = linkprevious.getText().rstrip(u'\u66f4\u591a\ue621')\
                 .rstrip(u'24\u5c0f\u65f6\u5185\u66f4\u65b015163\u672c')
             if(titledic.has_key(title)):
@@ -205,23 +211,23 @@ class Spider(wx.Frame):
                 titledic[title] = [Link.getText() + "    " + Link.get('href')]
             # LinkNum.append(Link.getText() + " " + str(int(regex.findall(Link.get('href'))[0])))
             popuptext.append([Link.getText(), title, Link.get('href')])
-        # self.inputText.AutoComplete(choices=LinkNum)  # åŸå§‹ç‰ˆæœ¬çš„è‡ªåŠ¨è¡¥å…¨åŠŸèƒ½
+        # self.inputText.AutoComplete(choices=LinkNum)  # Ô­Ê¼°æ±¾µÄ×Ô¶¯²¹È«¹¦ÄÜ
         self.SetTextForPopup(popuptext)
-        return self.GetTextForRecommand(titledic)  # å°†ç”Ÿæˆçš„åˆ†ç±»å­—å…¸æ ¼å¼åŒ–æˆè¾“å‡ºæ ¼å¼ï¼Œè¿›è¡Œè¿”å›æ˜¾ç¤º
+        return self.GetTextForRecommand(titledic)  # ½«Éú³ÉµÄ·ÖÀà×Öµä¸ñÊ½»¯³ÉÊä³ö¸ñÊ½£¬½øĞĞ·µ»ØÏÔÊ¾
 
     def recommand(self, event):
         soup = BeautifulSoup(
             markup=self.downloader.download("http://www.qidian.com/"),
-            features='html.parser', from_encoding='utf-8')  # è§£æwww.qidian.comç½‘ç«™çš„é¡µé¢ï¼Œç”ŸæˆBeautifulSoupå¯¹è±¡
-        self.MainText.SetEditable(False)  # å°†æ¨èçŠ¶æ€ä¸‹çš„ä¸»è¦æ–‡æœ¬æ¡†è®¾ç½®æˆä¸å¯ç¼–è¾‘çŠ¶æ€
-        self.MainTextValueSet(self.GetLinksForRecommand(soup))  # è®¾ç½®æ¨èå°è¯´æ–‡æœ¬
-        self.BarTextValueSet("æ¨è")  # è®¾ç½®çŠ¶æ€æ 
-        # æ¨èæ–‡æœ¬è¿›è¡Œäº†æ ¼å¼åŒ–è¾“å‡ºï¼Œå·²å®ŒæˆåŸºæœ¬è¦æ±‚
+            features='html.parser', from_encoding='utf-8')  # ½âÎöwww.qidian.comÍøÕ¾µÄÒ³Ãæ£¬Éú³ÉBeautifulSoup¶ÔÏó
+        self.MainText.SetEditable(False)  # ½«ÍÆ¼ö×´Ì¬ÏÂµÄÖ÷ÒªÎÄ±¾¿òÉèÖÃ³É²»¿É±à¼­×´Ì¬
+        self.MainTextValueSet(self.GetLinksForRecommand(soup))  # ÉèÖÃÍÆ¼öĞ¡ËµÎÄ±¾
+        self.BarTextValueSet("ÍÆ¼ö")  # ÉèÖÃ×´Ì¬À¸
+        # ÍÆ¼öÎÄ±¾½øĞĞÁË¸ñÊ½»¯Êä³ö£¬ÒÑÍê³É»ù±¾ÒªÇó
 
     def showbookdetail(self, event):
         print "call the showbookdetail!"
-        # å±•ç¤ºä¹¦ç±è¯¦æƒ…æŒ‰é’®
-        regex = re.compile(r"\S+\d{9,20}$")  # åŒ¹é…ï¼Œå½“è¾“å…¥æ¡†è¾“å…¥çš„æ»¡è¶³æˆ‘ä»¬è¦æ±‚çš„ä¹¦ç±æ ¼å¼ï¼Œæˆ‘ä»¬è¿›è¡Œæ˜¾ç¤ºä¹¦ç±è¯¦æƒ…
+        # Õ¹Ê¾Êé¼®ÏêÇé°´Å¥
+        regex = re.compile(r"\S+\d{9,20}$")  # Æ¥Åä£¬µ±ÊäÈë¿òÊäÈëµÄÂú×ãÎÒÃÇÒªÇóµÄÊé¼®¸ñÊ½£¬ÎÒÃÇ½øĞĞÏÔÊ¾Êé¼®ÏêÇé
         # print re.match(regex, self.inputText.GetValue())
         print self.namelink[self.inputText.GetValue()]
         if(re.match(regex, self.namelink[self.inputText.GetValue()])):
@@ -231,96 +237,96 @@ class Spider(wx.Frame):
         print "call the OnChar!"
         print event.GetKeyCode()
 
-    def OnBtnBackButton(self, event):  # è‡ªå®šä¹‰æŒ‰é”®å“åº”
+    def OnBtnBackButton(self, event):  # ×Ô¶¨Òå°´¼üÏìÓ¦
         # print type(event)
         print "call the OnBtnBackButton!"
         print event.GetKeyCode()
-        if event.GetKeyCode() == 8:  # å¦‚æœæ˜¯é€€æ ¼é”®
-            self.combotext.SetValue(self.combotext.GetValue()[:-1])  # åˆ é™¤ä¸€ä¸ªå­—ç¬¦
-            self.combotext.SetInsertionPointEnd()  # å°†å…‰æ ‡ç§»åŠ¨æœ€å
+        if event.GetKeyCode() == 8:  # Èç¹ûÊÇÍË¸ñ¼ü
+            self.combotext.SetValue(self.combotext.GetValue()[:-1])  # É¾³ıÒ»¸ö×Ö·û
+            self.combotext.SetInsertionPointEnd()  # ½«¹â±êÒÆ¶¯×îºó
         elif 32 <= event.GetKeyCode() <= 126:
             print event.GetKeyCode()
             self.combotext.AppendText(chr(event.GetKeyCode()))
-        elif event.GetKeyCode() == 9 or event.GetKeyCode() == 317:  # å¦‚æœæ˜¯Tabé”® æˆ–è€…æ–¹å‘é”®ä¸­çš„downé”®
+        elif event.GetKeyCode() == 9 or event.GetKeyCode() == 317:  # Èç¹ûÊÇTab¼ü »òÕß·½Ïò¼üÖĞµÄdown¼ü
             # print self.mcListPopup.GetFocusedItem()
             if self.combocontrol.IsPopupShown():
-                # é€‰ä¸­ç¬¬ä¸€ä¸ªï¼Œå¦‚æœæ²¡æœ‰itemè¢«é€‰ä¸­æˆ–è€…å·²ç»é€‰ä¸­äº†æœ€åä¸€ä¸ªitem
+                # Ñ¡ÖĞµÚÒ»¸ö£¬Èç¹ûÃ»ÓĞitem±»Ñ¡ÖĞ»òÕßÒÑ¾­Ñ¡ÖĞÁË×îºóÒ»¸öitem
                 if(self.mcListPopup.GetSelectedItemCount() == 0
                    or self.mcListPopup.GetSelection() == self.mcListPopup.GetItemCount() - 1):
                     self.mcListPopup.Select(0)
                     while(self.mcListPopup.ScrollPages(-1)):
-                        # å¦‚æœå·²ç»é€‰ä¸­äº†æœ€åä¸€ä¸ªitemï¼Œç„¶åæŒ‰ä¸‹Tabé”®ï¼Œåˆ™ä¸€ç›´å‘ä¸Šç¿»é¡µç›´åˆ°æœ€ä¸Šé¢
+                        # Èç¹ûÒÑ¾­Ñ¡ÖĞÁË×îºóÒ»¸öitem£¬È»ºó°´ÏÂTab¼ü£¬ÔòÒ»Ö±ÏòÉÏ·­Ò³Ö±µ½×îÉÏÃæ
                         pass
                 else:
                     print self.mcListPopup.GetItemCount()
                     print self.mcListPopup.GetSelection()
                     self.mcListPopup.ScrollLines(1)
-                    # é€‰ä¸­ä¸‹ä¸€ä¸ª
+                    # Ñ¡ÖĞÏÂÒ»¸ö
                     self.mcListPopup.Select(
                         self.mcListPopup.GetSelection() + 1, True)
                     self.mcListPopup.Select(
-                        self.mcListPopup.GetSelection(), False)  # å°†å½“å‰é€‰ä¸­çš„å–æ¶ˆé€‰ä¸­
+                        self.mcListPopup.GetSelection(), False)  # ½«µ±Ç°Ñ¡ÖĞµÄÈ¡ÏûÑ¡ÖĞ
             elif not self.combocontrol.IsPopupShown():
                 self.combocontrol.ShowPopup()
-        elif event.GetKeyCode() == 13:  # å¦‚æœæ˜¯å›è½¦é”®
-            if self.combocontrol.IsPopupShown():  # å¦‚æœå·²ç»æ‰“å¼€ä¸‹æ‹‰æ¡†
+        elif event.GetKeyCode() == 13:  # Èç¹ûÊÇ»Ø³µ¼ü
+            if self.combocontrol.IsPopupShown():  # Èç¹ûÒÑ¾­´ò¿ªÏÂÀ­¿ò
                 print self.mcListPopup.GetSelection()
                 if self.mcListPopup.GetSelection() == -1:
                     text = ""
                 elif self.combocontrol.IsPopupShown():
-                    # è®¾ç½®å½“å‰é€‰ä¸­çš„æ–‡æœ¬å†…å®¹
+                    # ÉèÖÃµ±Ç°Ñ¡ÖĞµÄÎÄ±¾ÄÚÈİ
                     text = self.mcListPopup.GetItemText(
                         self.mcListPopup.GetSelection())
-                self.combocontrol.HidePopup()  # éšè—ä¸‹æ‹‰æ¡†
-                self.combotext.SetValue(text)  # è®¾ç½®æ–‡æœ¬åŸŸçš„è¯æ¡
-                self.combotext.SetInsertionPointEnd()  # å°†å…‰æ ‡ç§»åŠ¨æ–‡æœ¬åŸŸæœ«å°¾
-        elif event.GetKeyCode() == 27:  # å¦‚æœå½“å‰æŒ‰ä¸‹çš„é”®ä¸ºESCé”®ï¼Œåˆ™å…³é—­ä¸‹æ‹‰æ¡†
-            if self.combocontrol.IsPopupShown():  # å¦‚æœå·²ç»æ‰“å¼€ä¸‹æ‹‰æ¡†
-                self.combocontrol.HidePopup()  # éšè—ä¸‹æ‹‰æ¡†
-                self.combotext.ChangeValue("")  # æ¸…ç©ºå½“å‰æ–‡æœ¬åŸŸå†…çš„æ‰€æœ‰å†…å®¹,å¹¶ä¸”ä¸äº§ç”Ÿtext chhange event
-        elif event.GetKeyCode() == 32:  # å¦‚æœæ˜¯ç©ºæ ¼é”®
+                self.combocontrol.HidePopup()  # Òş²ØÏÂÀ­¿ò
+                self.combotext.SetValue(text)  # ÉèÖÃÎÄ±¾ÓòµÄ´ÊÌõ
+                self.combotext.SetInsertionPointEnd()  # ½«¹â±êÒÆ¶¯ÎÄ±¾ÓòÄ©Î²
+        elif event.GetKeyCode() == 27:  # Èç¹ûµ±Ç°°´ÏÂµÄ¼üÎªESC¼ü£¬Ôò¹Ø±ÕÏÂÀ­¿ò
+            if self.combocontrol.IsPopupShown():  # Èç¹ûÒÑ¾­´ò¿ªÏÂÀ­¿ò
+                self.combocontrol.HidePopup()  # Òş²ØÏÂÀ­¿ò
+                self.combotext.ChangeValue("")  # Çå¿Õµ±Ç°ÎÄ±¾ÓòÄÚµÄËùÓĞÄÚÈİ,²¢ÇÒ²»²úÉútext chhange event
+        elif event.GetKeyCode() == 32:  # Èç¹ûÊÇ¿Õ¸ñ¼ü
             print "press the kong ge key"
             pass
 
-    def ChangeText(self, event):  # ç»„åˆæ¡†æ–‡æœ¬å˜åŠ¨äº‹ä»¶è§¦å‘å‡½æ•°
+    def ChangeText(self, event):  # ×éºÏ¿òÎÄ±¾±ä¶¯ÊÂ¼ş´¥·¢º¯Êı
         print "call the ChangeText!"
         print self.combotext.GetValue()
         # print event.GetPreviousHandler()
-        if(self.combotext.GetValue() == ""):  # å¦‚æœå½“å‰ç»„åˆæ¡†æ–‡æœ¬ä¸ºç©ºï¼Œåˆ™ä¸‹æ‹‰æ¨èåˆ—è¡¨æ˜¾ç¤º
+        if(self.combotext.GetValue() == ""):  # Èç¹ûµ±Ç°×éºÏ¿òÎÄ±¾Îª¿Õ£¬ÔòÏÂÀ­ÍÆ¼öÁĞ±íÏÔÊ¾
             self.mcListPopup.DeleteAllItems()
             names = sorted(self.namelink, key=lambda a: self.namelink[a][0])
             for name in names:
                 self.mcListPopup.Append(
-                    [name, self.namelink[name][-2], self.namelink[name][-1]])  # åˆ©ç”¨Appendæ–¹æ³•æ·»åŠ ä¸€è¡Œæ–‡æœ¬
+                    [name, self.namelink[name][-2], self.namelink[name][-1]])  # ÀûÓÃAppend·½·¨Ìí¼ÓÒ»ĞĞÎÄ±¾
             if not self.combocontrol.IsPopupShown():
                 self.combocontrol.ShowPopup()
                 # print self.combocontrol.FindFocus()
                 # self.combocontrol.Release()
             return
-        else:  # å¦‚æœä¸ä¸ºç©ºï¼Œåˆ™è¿›è¡ŒåŒ¹é…ï¼ŒåŒ¹é…æˆåŠŸï¼Œæ˜¾ç¤ºåŒ¹é…æˆåŠŸçš„æ¡ç›®ï¼Œä¸æˆåŠŸåˆ™ä¸æ˜¾ç¤ºä¸‹æ‹‰æ¡†
+        else:  # Èç¹û²»Îª¿Õ£¬Ôò½øĞĞÆ¥Åä£¬Æ¥Åä³É¹¦£¬ÏÔÊ¾Æ¥Åä³É¹¦µÄÌõÄ¿£¬²»³É¹¦Ôò²»ÏÔÊ¾ÏÂÀ­¿ò
             Find = False
             Result = []
             for name in self.namelink.keys():
-                # å¦‚æœä»¥å½“å‰æ–‡æœ¬åŸŸå†…çš„æ–‡å­—å¼€å¤´çš„åç§°æˆ‘ä»¬è®¤ä¸ºæ˜¯åŒ¹é…æˆåŠŸçš„ç»“æœ
+                # Èç¹ûÒÔµ±Ç°ÎÄ±¾ÓòÄÚµÄÎÄ×Ö¿ªÍ·µÄÃû³ÆÎÒÃÇÈÏÎªÊÇÆ¥Åä³É¹¦µÄ½á¹û
                 if name.startswith(self.combotext.GetValue()):
                     Find = True
                     Result.append([name, self.namelink[name][-2],
-                                   self.namelink[name][-1]])  # å°†åŒ¹é…åˆ°çš„æ–‡å­—å­˜å…¥åŒ¹é…ç»“æœ
-            if Find and len(Result) != 1:  # å¦‚æœæ‰¾åˆ°åŒ¹é…æ–‡æœ¬çš„æ•°é‡å¤§äº1ï¼Œåˆ™æ˜¾ç¤ºä¸‹æ‹‰æ¡†
-                self.mcListPopup.DeleteAllItems()  # æ¸…æ¥šå½“å‰ä¸‹æ‹‰æ¡†çš„æ‰€æœ‰æ–‡æœ¬
-                for res in Result:  # åˆå§‹åŒ–ä¸‹æ‹‰æ¡†çš„åŒ¹é…æ–‡æœ¬
+                                   self.namelink[name][-1]])  # ½«Æ¥Åäµ½µÄÎÄ×Ö´æÈëÆ¥Åä½á¹û
+            if Find and len(Result) != 1:  # Èç¹ûÕÒµ½Æ¥ÅäÎÄ±¾µÄÊıÁ¿´óÓÚ1£¬ÔòÏÔÊ¾ÏÂÀ­¿ò
+                self.mcListPopup.DeleteAllItems()  # Çå³şµ±Ç°ÏÂÀ­¿òµÄËùÓĞÎÄ±¾
+                for res in Result:  # ³õÊ¼»¯ÏÂÀ­¿òµÄÆ¥ÅäÎÄ±¾
                     self.mcListPopup.Append(res)
-                if not self.combocontrol.IsPopupShown():  # å¦‚æœä¸‹æ‹‰æ¡†æœªæ˜¾ç¤ºï¼Œåˆ™æ˜¾ç¤ºä¸‹æ‹‰æ¡†
+                if not self.combocontrol.IsPopupShown():  # Èç¹ûÏÂÀ­¿òÎ´ÏÔÊ¾£¬ÔòÏÔÊ¾ÏÂÀ­¿ò
                     self.combocontrol.ShowPopup()
             elif self.combocontrol.IsPopupShown():
                 self.combocontrol.HidePopup()
 
     def test(self, evt):
-        # æµ‹è¯•æŒ‰é’®åŠŸèƒ½
-        # self.prefix = "http://book.qidian.com/info/" # èµ·ç‚¹æ¯ä¸€æœ¬ä¹¦ç±ç½‘é¡µåœ°å€çš„å‰ç¼€ åŠ ä¸ŠIDå³ä¸ºå½“å‰ä¹¦ç±çš„é¡µé¢åœ°å€
+        # ²âÊÔ°´Å¥¹¦ÄÜ
+        # self.prefix = "http://book.qidian.com/info/" # ÆğµãÃ¿Ò»±¾Êé¼®ÍøÒ³µØÖ·µÄÇ°×º ¼ÓÉÏID¼´Îªµ±Ç°Êé¼®µÄÒ³ÃæµØÖ·
         # soup = BeautifulSoup(
         #     markup=self.downloader.download(self.prefix + self.combocontrol.GetValue().split()[-1]),
-        #     features='html.parser', from_encoding='utf-8' # è§£æå½“å‰é€‰ä¸­çš„ä¹¦ç±é¡µé¢ï¼Œç”ŸæˆBeautifulSoupå¯¹è±¡
+        #     features='html.parser', from_encoding='utf-8' # ½âÎöµ±Ç°Ñ¡ÖĞµÄÊé¼®Ò³Ãæ£¬Éú³ÉBeautifulSoup¶ÔÏó
         # )
         # print soup
         # print help(wx.TextAttr)
@@ -332,14 +338,14 @@ class Spider(wx.Frame):
         self.Layout()
 
     def MainTextValueSet(self, value):
-        self.MainText.SetValue(value)  # è®¾ç½®ä¸»è¦æ–‡æœ¬åŸŸçš„æ–‡æœ¬
+        self.MainText.SetValue(value)  # ÉèÖÃÖ÷ÒªÎÄ±¾ÓòµÄÎÄ±¾
         f = wx.Font(18, wx.ROMAN, wx.NORMAL, wx.NORMAL,
-                    False)  # è®¾ç½®å­—ä½“æ ¼å¼ï¼š18å· ç½—æ›¼å­—ä½“ï¼Œä¸å€¾æ–œã€ä¸åŠ ç²—
+                    False)  # ÉèÖÃ×ÖÌå¸ñÊ½£º18ºÅ ÂŞÂü×ÖÌå£¬²»ÇãĞ±¡¢²»¼Ó´Ö
         self.MainText.SetStyle(0, self.MainText.GetLastPosition(),
-                               wx.TextAttr(textColorBackGround, textColorForeGround, f))  # è®¾ç½®å‰æ™¯ã€èƒŒæ™¯è‰²ï¼ˆwx.TextAttrï¼‰
+                               wx.TextAttr(textColorBackGround, textColorForeGround, f))  # ÉèÖÃÇ°¾°¡¢±³¾°É«£¨wx.TextAttr£©
 
     def BarTextValueSet(self, value):
-        self.BarText.SetLabel(value)  # è®¾ç½®çŠ¶æ€æ æ–‡æœ¬
+        self.BarText.SetLabel(value)  # ÉèÖÃ×´Ì¬À¸ÎÄ±¾
         f = wx.Font(15, wx.ROMAN, wx.NORMAL, wx.BOLD,
-                    False)  # è®¾ç½®çŠ¶æ€æ æ–‡æœ¬å­—ä½“ï¼š15å· ç½—æ›¼å­—ä½“ï¼Œ ä¸å€¾æ–œã€åŠ ç²—
-        self.BarText.SetFont(f)  # è¿›è¡Œè®¾ç½®
+                    False)  # ÉèÖÃ×´Ì¬À¸ÎÄ±¾×ÖÌå£º15ºÅ ÂŞÂü×ÖÌå£¬ ²»ÇãĞ±¡¢¼Ó´Ö
+        self.BarText.SetFont(f)  # ½øĞĞÉèÖÃ
