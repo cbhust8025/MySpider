@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding=utf-8 -*-
 
 # --------------------------------------------------------
@@ -10,6 +9,7 @@
 爬虫主窗口
 '''
 import wx
+from wx import *
 import re
 from bs4 import BeautifulSoup
 from HtmlDownloader import HtmlDownloader
@@ -301,5 +301,5 @@ class Spider(wx.Frame):
 
     def BarTextValueSet(self, value):
         self.BarText.SetLabel(value)  # 设置状态栏文本
-        f = wx.Font(15, wx.ROMAN, wx.NORMAL, wx.BOLD, False)  # 设置状态栏文本字体：15号 罗曼字体， 不倾斜、加粗
+        f = wx.Font(15, wx.ROMAN, wx.NORMAL, wx.BOLD, False)# 设置状态栏文本字体：15号 罗曼字体， 不倾斜、加粗
         self.BarText.SetFont(f)  # 进行设置

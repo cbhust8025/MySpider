@@ -1,13 +1,12 @@
-#!/usr/bin/env python
 # -*- coding=utf-8 -*-
 
 # --------------------------------------------------------
 # Python Templet
 # Copyright (c) 2017 CB
-# Written by Leal Cheng
+# Written by lealcheng
 # --------------------------------------------------------
 '''
-ÕâÀïÊ¹ÓÃurllib2ÏÂÔØHtml£¬ÓÃÓÚ½âÎö
+è¿™é‡Œä½¿ç”¨urllib2ä¸‹è½½Htmlï¼Œç”¨äºè§£æ
 '''
 import urllib2
 

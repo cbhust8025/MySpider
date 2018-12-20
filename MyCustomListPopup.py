@@ -1,19 +1,18 @@
-#!/usr/bin/env python
 # -*- coding=utf-8 -*-
 
 # --------------------------------------------------------
 # Python Templet
 # Copyright (c) 2017 CB
-# Written by Leal Cheng
+# Written by lealcheng
 # --------------------------------------------------------
 '''
-×Ô¶¨ÒåÁĞ±í¿ò
+è‡ªå®šä¹‰åˆ—è¡¨æ¡†
 '''
-
+import wx
 from wx import *
 ########################################################################
-textColorForeGround = "#E9EBFE"  # ÎÄ±¾Ç°¾°
-textColorBackGround = "black"  # ÎÄ±¾±³¾°
+textColorForeGround = "#E9EBFE"  # æ–‡æœ¬å‰æ™¯
+textColorBackGround = "black"  # æ–‡æœ¬èƒŒæ™¯
 ########################################################################
 class MyCustomListPopup(ListCtrl, wx.combo.ComboPopup):
     def __init__(self):
@@ -27,22 +26,22 @@ class MyCustomListPopup(ListCtrl, wx.combo.ComboPopup):
         wx.combo.ComboPopup.__init__(self)
 
     def ConfigureListCtrl(self):
-        # ÁĞ±í¿òµÄÅäÖÃº¯Êı£¬ÔÚ¶¨ÒåÁËÁĞ±í¿ò¶ÔÏóÖ®ºó½øĞĞµ÷ÓÃÀ´ÅäÖÃ¶ÔÓ¦µÃÁËÁĞ±í¿ò
-        # ÖØĞ´Õâ¸öº¯ÊıÀ´×Ô¶¨ÒåÁĞ±í¿ò
+        # åˆ—è¡¨æ¡†çš„é…ç½®å‡½æ•°ï¼Œåœ¨å®šä¹‰äº†åˆ—è¡¨æ¡†å¯¹è±¡ä¹‹åè¿›è¡Œè°ƒç”¨æ¥é…ç½®å¯¹åº”å¾—äº†åˆ—è¡¨æ¡†
+        # é‡å†™è¿™ä¸ªå‡½æ•°æ¥è‡ªå®šä¹‰åˆ—è¡¨æ¡†
         pass
 
     def OnMotion(self, evt):
-        # ²¶×½Êó±êÎ»ÖÃ£¬¸ßÁÁµ±Ç°Êó±êËùÔÚµÄÁĞ±í¿òÖĞµÄÒ»ĞĞ
+        # æ•æ‰é¼ æ ‡ä½ç½®ï¼Œé«˜äº®å½“å‰é¼ æ ‡æ‰€åœ¨çš„åˆ—è¡¨æ¡†ä¸­çš„ä¸€è¡Œ
         item, flags = self.HitTest(evt.GetPosition())
-        if item >= 0:  # Èç¹ûitem>= 0,Ôò±íÊ¾Ñ¡ÖĞÁËÒ»¸öÓĞĞ§µÄitem
+        if item >= 0:  # å¦‚æœitem>= 0,åˆ™è¡¨ç¤ºé€‰ä¸­äº†ä¸€ä¸ªæœ‰æ•ˆçš„item
             # self.Select(item, 1)
-            for i in range(self.GetItemCount()): # ÕÒµ½×ÜĞĞÊı£¬´Ó0¿ªÊ¼Ë÷Òı
-                self.Select(i, 1 if i == item else 0)  # Èç¹ûÊÇµ±Ç°Êó±êÍ£ÁôµÄÎ»ÖÃÓĞitem£¬Ôò¸ßÁÁ´Ëitem
-            self.curitem = item  # ½«µ±Ç°item±äÁ¿ÖÃÎªµ±Ç°Ñ¡ÖĞµÄitem
+            for i in range(self.GetItemCount()): # æ‰¾åˆ°æ€»è¡Œæ•°ï¼Œä»0å¼€å§‹ç´¢å¼•
+                self.Select(i, 1 if i == item else 0)  # å¦‚æœæ˜¯å½“å‰é¼ æ ‡åœç•™çš„ä½ç½®æœ‰itemï¼Œåˆ™é«˜äº®æ­¤item
+            self.curitem = item  # å°†å½“å‰itemå˜é‡ç½®ä¸ºå½“å‰é€‰ä¸­çš„item
 
     def OnLeftDown(self, evt):
-        # ²¶×½Êó±ê¶¯×÷£¬µ±Êó±ê×ó¼ü°´ÏÂ±íÊ¾Ñ¡ÖĞÁËÁĞ±í¿òµÄÄ³Ò»ĞĞ
-        # ½«ÁĞ±í¿ò½øĞĞ¹Ø±Õ£¨Dismiss--Òş²Ø£¬¿ÉÖØĞ´À´½øĞĞÄ³ÖÖ²Ù×÷£©
+        # æ•æ‰é¼ æ ‡åŠ¨ä½œï¼Œå½“é¼ æ ‡å·¦é”®æŒ‰ä¸‹è¡¨ç¤ºé€‰ä¸­äº†åˆ—è¡¨æ¡†çš„æŸä¸€è¡Œ
+        # å°†åˆ—è¡¨æ¡†è¿›è¡Œå…³é—­ï¼ˆDismiss--éšè—ï¼Œå¯é‡å†™æ¥è¿›è¡ŒæŸç§æ“ä½œï¼‰
         # self.value = self.curitem
         # self.GetControl().SetValue(self.GetItemText(self.curitem))
         self.Dismiss()
@@ -60,17 +59,17 @@ class MyCustomListPopup(ListCtrl, wx.combo.ComboPopup):
 
     # Create the popup child control.  Return true for success.
     def Create(self, parent):
-        # ³õÊ¼»¯ÁĞ±í¿ò¶ÔÏó£¬±ØĞëÖØĞ´µÄµÚÈı¸öº¯Êı
+        # åˆå§‹åŒ–åˆ—è¡¨æ¡†å¯¹è±¡ï¼Œå¿…é¡»é‡å†™çš„ç¬¬ä¸‰ä¸ªå‡½æ•°
         wx.ListCtrl.Create(self, parent,
                            style=wx.LC_REPORT)
         self.curitem = -1
-        self.Bind(wx.EVT_MOTION, self.OnMotion)  # ¸øÁĞ±í¿ò°ó¶¨Êó±ê»¬¶¯ÊÂ¼ş
-        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)  # ¸øÁĞ±í¿ò°ó¶¨Êó±ê×ó¼üµ¥»÷ÊÂ¼ş
-        return True  # ·µ»ØTrue±íÊ¾¹¹½¨ÁĞ±í¿ò³É¹¦
+        self.Bind(wx.EVT_MOTION, self.OnMotion)  # ç»™åˆ—è¡¨æ¡†ç»‘å®šé¼ æ ‡æ»‘åŠ¨äº‹ä»¶
+        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)  # ç»™åˆ—è¡¨æ¡†ç»‘å®šé¼ æ ‡å·¦é”®å•å‡»äº‹ä»¶
+        return True  # è¿”å›Trueè¡¨ç¤ºæ„å»ºåˆ—è¡¨æ¡†æˆåŠŸ
 
     # Return the widget that is to be used for the popup
     def GetControl(self):
-        # ±ØĞëÖØĞ´µÄº¯ÊıÖ®Ò»£¬ÓÃÓÚ´´½¨×éºÏ¿òÖĞµÄÁĞ±í¿òÀ´Ñ°ÕÒ×Ô¼ºµÄ¸¸´°¿Ú
+        # å¿…é¡»é‡å†™çš„å‡½æ•°ä¹‹ä¸€ï¼Œç”¨äºåˆ›å»ºç»„åˆæ¡†ä¸­çš„åˆ—è¡¨æ¡†æ¥å¯»æ‰¾è‡ªå·±çš„çˆ¶çª—å£
         # self.log.write("ListCtrlComboPopup.GetControl")
         return self
 
@@ -84,8 +83,8 @@ class MyCustomListPopup(ListCtrl, wx.combo.ComboPopup):
 
     # Return a string representation of the current item.
     def GetStringValue(self):
-        # ±ØĞëÖØĞ´µÄµÚ¶ş¸öº¯Êı
-        # Èç¹ûÏëÒª½«Ñ¡ÖĞµÄÁĞ±í¿òµÄÖµÅäÖÃµ½×éºÏ¿òµÄÎÄ±¾¿òÄÚ£¬ÔÚÁĞ±í¿ò¹Ø±Õºó½«»áµ÷ÓÃ´Ëº¯Êı
+        # å¿…é¡»é‡å†™çš„ç¬¬äºŒä¸ªå‡½æ•°
+        # å¦‚æœæƒ³è¦å°†é€‰ä¸­çš„åˆ—è¡¨æ¡†çš„å€¼é…ç½®åˆ°ç»„åˆæ¡†çš„æ–‡æœ¬æ¡†å†…ï¼Œåœ¨åˆ—è¡¨æ¡†å…³é—­åå°†ä¼šè°ƒç”¨æ­¤å‡½æ•°
         if self.curitem >= 0:
             return self.GetItemText(self.curitem)
         return ""
